@@ -1,0 +1,35 @@
+{% extends 'layout/app.html' %}
+
+{% load static %}
+{% block stylesheet %}
+    <style>
+        .col-md-6 {
+            padding: 7px;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="card card-register mx-auto mt-5">
+            <div class="card-header">
+                <i class="fas fa-user-plus"></i>
+                Crea utente
+            </div>
+            <div class="card-body">
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    {% include 'includes/bs4_form.html' with form=form %}
+                    <button class="btn btn-dark btn-block">Crea Utente</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+        $("#id_username").attr("placeholder", "Inserisci Username");
+        $("#id_password").attr("placeholder", "Inserisci Password");
+    </script>
+{% endblock %}

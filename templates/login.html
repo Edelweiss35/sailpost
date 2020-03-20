@@ -1,0 +1,25 @@
+{% extends 'layout/login.html' %}
+
+{% load static %}
+{% block body %}
+    <div class="container">
+    <img style="width: 180px;justify-content: center;align-items: center;display: flex;" src="{% static 'img/logo.png' %}" class="mx-auto mt-5" alt="">
+        <div class="card card-login mx-auto mt-2">
+            <div class="card-header">Accedi</div>
+            <div class="card-body">
+                <form class="form-horizontal" role="form" method="POST">
+                    {% csrf_token %}
+                    {% include 'includes/bs4_form_all.html' with form=form %}
+                    <button type="submit" class="btn btn-dark btn-block"><i class="fa fa-sign-in"></i> Accedi</button>
+                </form>
+                <span style="justify-content: center;align-items: center;display: flex;" class="mx-auto mt-2">Copyright &copy; Postal trade srl</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript">
+        $("#id_username").attr("placeholder", "Inserisci Username");
+        $("#id_password").attr("placeholder", "Inserisci Password");
+    </script>
+{% endblock %}

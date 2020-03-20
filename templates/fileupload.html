@@ -1,0 +1,115 @@
+{% extends 'layout/app.html' %}
+{% block stylesheet %}
+<style>
+</style>
+{% endblock %}
+{% block body %}
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-upload"></i>
+                    Caricamento file
+                </div>
+                <div class="card-body">
+                    <form action="" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-lg">
+                                        <div class="custom-file">
+                                            {{form.document}}
+                                            <label class="custom-file-label" id="fileLabel" for="fileInput">Scegli file</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-lg">
+                                        <div class="custom-file">
+                                            {{form.description}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success btn-block" type="submit">Carica ora &nbsp;&nbsp;&nbsp;<span></span></button>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-folder"></i>
+                    Lista File
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                    <table class="table table-bordered"  id="dataTable2" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Descrizione</th>
+                            <th>Nome File con Percorso</th>
+                            {% if request.user.is_superuser %}
+                            <th>Utente</th>
+                            {% endif %}
+                            <th>Caricato il</th>
+                            <th>Azioni</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                            <th>Descrizione</th>
+                            <th>Nome File con Percorso</th>
+                            {% if request.user.is_superuser %}
+                            <th>Utente</th>
+                            {% endif %}
+                            <th>Caricato il</th>
+                            <th>Azioni</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for document in documents %}
+                            <tr>
+                                <td>{{document.description}}</td>
+                                <td>{{document.document}}</td>
+                                {% if request.user.is_superuser %}
+                                <td>{{document.user}}</td>
+                                {% endif %}
+                                <td>{{document.uploaded_at|date:"d-m-Y h:iA"}}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-primary" href="media/{{document.document}}" target="blank"><span class="fa fa-eye"></span>&nbsp;View</a>
+                                    {% if request.user.is_superuser %}
+                                    <!-- <a class="btn btn-sm btn-danger" href="file/delete/{{ document.id }}"><span class="fa fa-trash"></span>&nbsp;Delete</a> -->
+                                    {% endif %}
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+    $('#dataTable2').dataTable({
+        "order": []
+    });
+});
+        $(document).on('change', '.file', function (event) {
+            document.getElementById('fileLabel').innerHTML = event.target.files[0].name;
+        });
+    </script>
+{% endblock %}
